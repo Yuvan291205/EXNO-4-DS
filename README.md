@@ -93,84 +93,94 @@ CODING AND OUTPUT:
 import pandas as pd
 import numpy as np
 import seaborn as sns
-
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
-
 data=pd.read_csv("/content/income(1) (1).csv",na_values=[ " ?"])
 data
-Screenshot 2024-10-03 105005
-
+```
+![image](https://github.com/user-attachments/assets/9e7b4e0d-b1e1-42b0-8226-2685576aea15)
+```
 data.isnull().sum()
-Screenshot 2024-10-03 105135
-
+```
+![image](https://github.com/user-attachments/assets/a2a4526f-bea9-4592-9a04-1e422e23b510)
+```
 missing=data[data.isnull().any(axis=1)]
 missing
-image
-
+```
+![image](https://github.com/user-attachments/assets/d9353132-b13c-4dd1-85cf-db0fbb431dc1)
+```
 data2=data.dropna(axis=0)
 data2
-image
-
+```
+![image](https://github.com/user-attachments/assets/a124bb94-e580-4cb4-923d-f89bd7b3e932)
+```
 sal=data["SalStat"]
-
 data2["SalStat"]=data["SalStat"].map({' less than or equal to 50,000':0,' greater than 50,000':1})
 print(data2['SalStat'])
-image
-
+```
+![image](https://github.com/user-attachments/assets/e6ccebff-f2ef-40e3-9409-f82e0c1da7c8)
+```
 sal2=data2['SalStat']
-
 dfs=pd.concat([sal,sal2],axis=1)
 dfs
-image
-
+```
+![image](https://github.com/user-attachments/assets/3fbeb0f3-c491-42a8-90cc-6f3c4268554f)
+```
 data2
-image
-
+```
+![image](https://github.com/user-attachments/assets/a7ec9cba-c72c-4c41-a985-46ba5e94edfb)
+```
 new_data=pd.get_dummies(data2, drop_first=True)
 new_data
-image
-
+```
+![image](https://github.com/user-attachments/assets/a43b8469-67e1-472d-ae12-8606b82d7ace)
+```
 columns_list=list(new_data.columns)
 print(columns_list)
-image
-
+```
+![image](https://github.com/user-attachments/assets/2a0941a4-cef2-45c8-88c1-2539d890fb73)
+```
 features=list(set(columns_list)-set(['SalStat']))
 print(features)
-image
-
+```
+![image](https://github.com/user-attachments/assets/82796029-a89f-4b50-b233-e7dde57a1ea4)
+```
 y=new_data['SalStat'].values
 print(y)
-image
-
+```
+![image](https://github.com/user-attachments/assets/e2fbfa36-0bd3-4c9a-bcf3-766ba57efb9c)
+```
 x=new_data[features].values
 print(x)
-image
-
+```
+![image](https://github.com/user-attachments/assets/ae3ba7f5-0299-4702-8db9-59e113f26d0f)
+```
 train_x,test_x,train_y,test_y=train_test_split(x,y,test_size=0.3,random_state=0)
-
 KNN_classifier=KNeighborsClassifier(n_neighbors = 5)
-
 KNN_classifier.fit(train_x,train_y)
-image
-
+```
+![image](https://github.com/user-attachments/assets/9a7596cc-d3a0-4308-b687-3edeebbfc168)
+```
 prediction=KNN_classifier.predict(test_x)
-
 confusionMatrix=confusion_matrix(test_y, prediction)
 print(confusionMatrix)
-image
-
+```
+![image](https://github.com/user-attachments/assets/ed0eb7fd-f6a6-49e5-be50-41d7025246a5)
+```
 accuracy_score=accuracy_score(test_y,prediction)
 print(accuracy_score)
-image
-
+```
+![image](https://github.com/user-attachments/assets/1720a0a0-0c40-40af-accd-5c94d1fc5dfa)
+```
 print("Misclassified Samples : %d" % (test_y !=prediction).sum())
-image
-
+```
+![image](https://github.com/user-attachments/assets/213dc273-4d70-4e03-911b-2a0a899a7671)
+```
 data.shape
-image
-
+```
+![image](https://github.com/user-attachments/assets/ed3e3022-1637-48af-b299-8ec4fe23cab5)
+```
 import pandas as pd
 from sklearn.feature_selection import SelectKBest, mutual_info_classif, f_classif
 data={
@@ -183,38 +193,38 @@ data={
 df=pd.DataFrame(data)
 x=df[['Feature1','Feature3']]
 y=df[['Target']]
-
 selector=SelectKBest(score_func=mutual_info_classif,k=1)
 x_new=selector.fit_transform(x,y)
-
 selected_feature_indices=selector.get_support(indices=True)
-
 selected_features=x.columns[selected_feature_indices]
 print("Selected Features:")
 print(selected_features)
-image
-
+```
+![image](https://github.com/user-attachments/assets/7ddab293-4b2c-486a-994d-794d086124fe)
+```
 import pandas as pd
 import numpy as np
 from scipy.stats import chi2_contingency
-
 import seaborn as sns
 tips=sns.load_dataset('tips')
 tips.head()
-image
-
+```
+![image](https://github.com/user-attachments/assets/8ce7d581-8138-4c26-8861-be04fe69198e)
+```
 tips.time.unique()
-image
-
+```
+![image](https://github.com/user-attachments/assets/842de1a9-2982-4adb-8f8c-1f68a0bd8504)
+```
 contingency_table=pd.crosstab(tips['sex'],tips['time'])
 print(contingency_table)
-image
-
+```
+![image](https://github.com/user-attachments/assets/eedeebc9-7010-436d-a85a-a3bc9675e497)
+```
 chi2,p,_,_=chi2_contingency(contingency_table)
 print(f"Chi-Square Statistics: {chi2}")
 print(f"P-Value: {p}")
-image
 ```
+![image](https://github.com/user-attachments/assets/b53afffb-24e8-4466-acf9-ca70cae0ae95)
 
 # RESULT:
       Thus, Feature selection and Feature scaling has been used on thegiven dataset.
